@@ -17,19 +17,19 @@ layout: default
 
     <!-- Main -->
     <div id="main" data-exif='{{ site.exif }}'>
-        {% for image in site.static_files %}
-        {% if image.path contains 'fulls' %}
-          {% assign image_name = image.name %}
-          {% if site.data.captions[image_name] %}
+        {% assign shuffled_captions = site.data.shuffled_captions %}
+        {% for caption_entry in shuffled_captions %}
+          {% assign image_name = caption_entry[0] %}
+          {% assign image_caption = caption_entry[1] %}
+          {% assign image_path = site.image_fulls_loc | append: "/" | append: image_name %}
+          {% assign thumb_path = site.image_thumbs_loc | append: "/" | append: image_name %}
             <article class="thumb">
-                <a href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
-                    <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt=""
-                         data-name="{{ image.name }}"/></a>
-                <!--<h2></h2>
-                <p></p>-->
+                <a href="{{ site.baseurl }}{{ image_path }}" class="image">
+                    <img src="{{ site.baseurl }}{{ thumb_path }}" alt="{{ image_caption }}"
+                         data-name="{{ image_name }}"/></a>
+                <!--<h2>{{ image_caption }}</h2>
+                <p>{{ image_caption }}</p>-->
             </article>
-          {% endif %}
-        {% endif %}
         {% endfor %}
         <script>
             var captions = {

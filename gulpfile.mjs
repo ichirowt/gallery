@@ -7,6 +7,7 @@ import rename from 'gulp-rename';
 import filter from 'gulp-filter';
 import path from 'path';
 import del from 'del';
+import { exec } from 'child_process';
 
 const sass = gulpSass(dartSass);
 const cssSourceGlob = './assets/sass/**/*.scss';
@@ -73,6 +74,15 @@ gulp.task('minify-js', function () {
         .pipe(gulp.dest('./assets/js'));
 });
 
+// Task to shuffle captions
+gulp.task('shuffle-captions', function(cb) {
+    exec('node scripts/shuffle_captions.js', function (err, stdout, stderr) {
+        console.log(stdout);
+        console.error(stderr);
+        cb(err);
+    });
+});
+
 // build task
 gulp.task('build', gulp.series('sass', 'minify-js'));
 
@@ -80,4 +90,4 @@ gulp.task('build', gulp.series('sass', 'minify-js'));
 gulp.task('resize', gulp.series('delete', 'resize-images'));
 
 // default task
-gulp.task('default', gulp.series('build', 'resize'));
+gulp.task('default', gulp.series('shuffle-captions', 'build', 'resize'));
