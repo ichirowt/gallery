@@ -19,15 +19,25 @@ layout: default
     <div id="main" data-exif='{{ site.exif }}'>
         {% for image in site.static_files %}
         {% if image.path contains 'fulls' %}
-        <article class="thumb">
-            <a href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
-                <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt=""
-                     data-name="{{ image.name }}"/></a>
-            <!--<h2></h2>
-            <p></p>-->
-        </article>
+          {% assign image_name = image.name %}
+          {% if site.data.captions[image_name] %}
+            <article class="thumb">
+                <a href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
+                    <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt=""
+                         data-name="{{ image.name }}"/></a>
+                <!--<h2></h2>
+                <p></p>-->
+            </article>
+          {% endif %}
         {% endif %}
         {% endfor %}
+        <script>
+            var captions = {
+                {% for caption in site.data.captions %}
+                "{{ caption[0] }}": "{{ caption[1] }}"{% unless forloop.last %},{% endunless %}
+                {% endfor %}
+            };
+        </script>
     </div>
 
     <!-- Footer -->

@@ -208,14 +208,25 @@
 	  baseZIndex: 20000,
 	  caption: function ($a) {
 		var $image_img = $a.children('img');
-		var data = exifDatas[$image_img.data('name')];
-		if (data === undefined) {
-			// EXIF data					
-			EXIF.getData($image_img[0], function () {
-				data = exifDatas[$image_img.data('name')] = getExifDataMarkup(this);
-			});
+		var imageName = $image_img.data('name');
+		var caption = captions[imageName];
+		var exifData = exifDatas[imageName];
+		if (exifData === undefined) {
+		  // EXIF data
+		  EXIF.getData($image_img[0], function () {
+			exifData = exifDatas[imageName] = getExifDataMarkup(this);
+		  });
 		}
-		return data !== undefined ? '<p>' + data + '</p>' : ' ';
+	  
+		var captionAndExif = "";
+		if (caption) {
+		  captionAndExif += '<p class="lightbox-text" style="margin: 0 0 0 0">' + caption + '</p>';
+		}
+		if (exifData) {
+		  captionAndExif += '<p class="lightbox-text">' + exifData + '<p>';
+		}
+	  
+		return captionAndExif ? captionAndExif : ' ';
 	},
 	  fadeSpeed: 300,
 	  onPopupClose: function () {
@@ -257,7 +268,12 @@
 			var current_data = exif[current];
 			var exif_data = EXIF.getTag(img, current_data['tag']);
 			if (typeof exif_data !== "undefined") {
-				template += '<i class="' + current_data['icon'] + '" aria-hidden="true"></i> ' + exif_data + '&nbsp;&nbsp;';
+				template += '<span><i class="' + current_data['icon'] + '" aria-hidden="true"></i> ' + exif_data + '</span>';
+				if (current_data['tag'] === 'DateTimeOriginal') {
+					template += '<br>';
+				} else {
+					template += '&nbsp;&nbsp;';
+				}
 			}
 		}
 		return template;
