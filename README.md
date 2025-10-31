@@ -8,35 +8,70 @@ A jekyll website for photographers
 2. To add new pictures, you need to just upload them. __No code__ changes required.
 3. And, my favorite, you get to see EXIF data like __aperture, shutter speed, iso__ etc. when you click on any image, automagically. Moreover, you can customize this as per your needs.
 
+## Feature Updates
+- Support caption message above EXIF data
+- Only show images with caption, random order each time building
+- Simplify headers and footers, reduce gray edges
+- Use squash presets to generate `full` and `thumb` images
+
+## Workflow
+- Generate `full` and `thumb` images with squash (resize, remove location, reserve EXIF, rename, compress 50% JPG, etc)
+- Update `_data/caption.yml`
+- Commit and push, Github Action runs `gulp` and `jekyll build`
+
 ## Quick Start
-If you know a tad about tech and love taking pictures then this open-source project may help you setup a website to showcase
-all your creations without effort. And not just that, with this you need not pay a single dime to host your website as
-it's hosted by GitHub for __free__.
 
-**Just follow the below steps and your website would be live in no time:**
+1.  **Fork the repository**: Click the "Fork" button at the top right corner.
+2.  **Upload your photos**: Add your full-size images to the `images/fulls` directory and corresponding thumbnails to the `images/thumbs` directory.
+3.  **Update captions**: Edit `_data/captions.yml` to add captions for your images. The filename of the image should be the key.
+4.  **Configure for deployment**: See the "GitHub Pages Deployment" section below to configure your site for deployment.
 
-1. Fork this repo by hitting the `Fork` button at the top right corner.
-2. Enable github pages from the repo settings.
-3. Upload your pictures to `images/fulls` and `images/thumbs` directory. _You can do that on github.com itself or you can clone and push the images to your repo._
-4. Add your own custom domain in `CNAME` file or just remove the file if you don't own a domain and use the default domain that github provides ([yourusername].github.io/photography).
-5. Update `baseurl` field in `_config.yml` file with whatever domain you used in step 4.
-6. And that's it, your website is set. To view, go to [photography.rampatra.com](http://photography.rampatra.com) (or whatever you have in the CNAME file) and if you don't have one, you can go to [[yourusername].github.io/photography](http://yourusername.github.io/photography)
+## GitHub Pages Deployment
 
-And, of course, you don't want my name at the bottom to show up. You can change it in `_config.yml` file as well as a few other settings like your social links, google analytics, etc. Just do not forget to [build the website](#build-the-website) after you make the changes.
+This repository is set up for automated deployment to GitHub Pages using GitHub Actions. The workflow will automatically build and deploy your site whenever you push changes to the `master` branch.
 
-## Run the website locally to test
-1. `$ cd photography` - go to the project directory
-2. `$ bundle install` - install gems
-3. Change the `baseurl` in `_config.yml` to an empty value
-4. `$ bundle exec jekyll serve` - start/run the website
+There are two ways to deploy your site:
 
-### Build the website
-1. `$ cd photography` - go to the project directory
-2. `$ npm install` - install all npm dependencies
-3. `$ gulp` - minify css, js, resize images, etc.
+### 1. Using the Default GitHub Pages URL
 
-Note: You only need to build the website if you make changes such as replacing the images, modifying the css styles, etc.
- 
+If you want to use the default URL (`<your-username>.github.io/<repository-name>`), make sure of the following:
+
+*   **No `CNAME` file**: Ensure there is no `CNAME` file in the root of your repository.
+*   **`_config.yml`**:
+    *   `baseurl`: Set this to the name of your repository, with a leading slash (e.g., `"/blog-gallery"`).
+    *   `url`: This can be left blank or set to your full GitHub Pages URL.
+
+### 2. Using a Custom Domain
+
+If you want to use a custom domain:
+
+*   **`CNAME` file**: Create a `CNAME` file in the root of your repository containing your custom domain (e.g., `photography.example.com`).
+*   **DNS Settings**: Configure your domain's DNS records to point to GitHub Pages.
+*   **`_config.yml`**:
+    *   `baseurl`: Set this to an empty string (`""`).
+    *   `url`: Set this to your custom domain with the `https://` protocol (e.g., `"https://photography.example.com"`).
+
+### Automated Build Process
+
+The GitHub Actions workflow in this repository (`.github/workflows/jekyll.yml`) automates the following steps on every push:
+
+1.  Sets up Node.js and Ruby.
+2.  Installs npm and Bundler dependencies.
+3.  Runs `npx gulp` to process assets (CSS, JS, images).
+4.  Builds the Jekyll site.
+5.  Deploys the site to GitHub Pages.
+
+Because of this automation, you do not need to run `gulp` or build the site locally before pushing your changes.
+
+## Running Locally
+
+To test your site locally:
+
+1.  `$ bundle install`
+2.  `$ npm install`
+3.  In `_config.yml`, set `baseurl` to `""`.
+4.  `$ bundle exec jekyll serve --port 8000`
+
 ## ProTips
 
 ### Resize Images
