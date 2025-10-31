@@ -29,3 +29,4 @@ exif: '[{"tag": "DateTimeOriginal", "icon": "far fa-calendar"}, {"tag": "Model",
 
 exclude:
   - aperture-jekyll-template-main/
+  - vendor/
