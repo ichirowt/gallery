@@ -25,18 +25,14 @@ layout: default
           {% assign thumb_path = site.image_thumbs_loc | append: "/" | append: image_name %}
             <article class="thumb">
                 <a href="{{ site.baseurl }}{{ image_path }}" class="image">
-                    <img src="{{ site.baseurl }}{{ thumb_path }}" alt="{{ image_caption }}"
+                    <img src="{{ site.baseurl }}{{ thumb_path }}" alt="{{ image_caption | escape }}"
                          data-name="{{ image_name }}"/></a>
-                <!--<h2>{{ image_caption }}</h2>
-                <p>{{ image_caption }}</p>-->
+                <!--<h2>{{ image_caption | escape }}</h2>
+                <p>{{ image_caption | escape }}</p>-->
             </article>
         {% endfor %}
         <script>
-            var captions = {
-                {% for caption in site.data.captions %}
-                "{{ caption[0] }}": "{{ caption[1] }}"{% unless forloop.last %},{% endunless %}
-                {% endfor %}
-            };
+            var captions = {{ site.data.captions | jsonify }};
         </script>
     </div>
 

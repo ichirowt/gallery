@@ -220,7 +220,8 @@
 	  
 		var captionAndExif = "";
 		if (caption) {
-		  captionAndExif += '<p class="lightbox-text" style="margin: 0 0 0 0">' + caption + '</p>';
+		  var safeCaption = $('<div/>').text(caption).html();
+		  captionAndExif += '<p class="lightbox-text" style="margin: 0 0 0 0; white-space: pre-wrap;">' + safeCaption + '</p>';
 		}
 		if (exifData) {
 		  captionAndExif += '<p class="lightbox-text">' + exifData + '<p>';
