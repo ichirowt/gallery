@@ -18,10 +18,6 @@ const generatedCssFiles = [
     `${cssOutputDir}/noscript.min.css`
 ];
 
-gulp.task('delete', function () {
-    return del(['images/*.*']);
-});
-
 gulp.task('resize-images', function () {
     return gulp.src('images/*.*')
         .pipe(imageResize({
@@ -87,7 +83,7 @@ gulp.task('shuffle-captions', function(cb) {
 gulp.task('build', gulp.series('sass', 'minify-js'));
 
 // resize images
-gulp.task('resize', gulp.series('delete', 'resize-images'));
+gulp.task('resize', gulp.series('resize-images'));
 
 // default task
 gulp.task('default', gulp.series('shuffle-captions', 'build', 'resize'));
